@@ -7,7 +7,7 @@ class YoutubeGame2 < Gosu::Window
         self.caption ='Pokemon'
         @background_image = Gosu::Image.new("images/kanto1.png")
         @player = Player.new
-        @player.warp(800,575)
+        @player.warp(400,575)
     end
 
     # * Puts all game logic in update method
@@ -68,8 +68,8 @@ class Player
     def move
         @x += @vel_x
         @y += @vel_y
-        @x %= 640
-        @y %= 480
+        @x %= 1600
+        @y %= 1130
 
         @vel_x *= 0.95
         @vel_y *= 0.95
