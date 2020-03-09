@@ -50,13 +50,6 @@ class YoutubeGame2 < Gosu::Window
 end
 
 
-
-
-
-
-
-
-
 class Player
 
     attr_reader :score
@@ -123,12 +116,12 @@ class MoneyPile
     attr_reader :x, :y
     def initialize(animation)
         @animation = animation
-        @color = Gosu::Color::BLACK.dup
+        @color = Gosu::Color::GREEN.dup
         
         @color.green = rand(256-40)+40
         
-        @x = rand * 1600
-        @y = rand * 1130
+        @x = rand * 882
+        @y = rand * 498
 
     end
 
