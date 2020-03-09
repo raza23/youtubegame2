@@ -1,19 +1,19 @@
 require 'gosu'
 
 module ZOrder
-    BACKGROUND,POKEBALLS,PLAYER,UI = *0..3
+    BACKGROUND,MONEYPILES,PLAYER,UI = *0..3
 end
 
 class YoutubeGame2 < Gosu::Window
     def initialize
         #  * Sets up game window dimensions and the Screen Title
-        super 1600,1130
-        self.caption ='Pokemon'
-        @background_image = Gosu::Image.new("images/kanto1.png")
+        super 882,498
+        self.caption ='ANYTHING YOU GRAB YOU KEEP'
+        @background_image = Gosu::Image.new("images/bestbuy.jpg")
         @player = Player.new
         @player.warp(400,575)
-        @pokeball = Gosu::Image.load_tiles("images/pokeball.png",200,200)
-        @pokeballs = Array.new
+        @moneypile = Gosu::Image.load_tiles("images/moneypile.png",250,154)
+        @moneypiles = Array.new
         @font = Gosu::Font.new(40)
     end
 
@@ -32,10 +32,10 @@ class YoutubeGame2 < Gosu::Window
         end
 
         @player.move
-        @player.catch(@pokeballs)
+        @player.catch(@moneypiles)
 
-        if rand(100) < 4 and @pokeballs.size < 25
-            @pokeballs.push(PokeBall.new(@pokeball))
+        if rand(100) < 4 and @moneypiles.size < 25
+            @moneypiles.push(MoneyPile.new(@moneypile))
         end
 
     end
@@ -43,8 +43,8 @@ class YoutubeGame2 < Gosu::Window
     def draw
         @player.draw
         @background_image.draw(0,0,ZOrder::BACKGROUND)
-        @pokeballs.each{|ball| ball.draw}
-        @font.draw_text("Score: #{@player.score}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
+        @moneypiles.each{|pile| pile.draw}
+        @font.draw_text("Total Cash: #{@player.score}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::BLACK)
 
     end
 end
@@ -61,7 +61,7 @@ class Player
 
     attr_reader :score
     def initialize
-        @image = Gosu::Image.new('images/pokemon_player.png')
+        @image = Gosu::Image.new('images/mrbeast.png')
         @x = @y = @vel_x = @vel_y = @angle = 0.0 
         @score = 0
     end
@@ -86,8 +86,8 @@ class Player
     def move
         @x += @vel_x
         @y += @vel_y
-        @x %= 1600
-        @y %= 1130
+        @x %= 882
+        @y %= 498
 
         @vel_x *= 0.95
         @vel_y *= 0.95
@@ -102,10 +102,10 @@ class Player
         @score
     end
 
-    def catch(pokeballs)
-        pokeballs.reject! do |ball| 
-            if Gosu.distance(@x,@y, ball.x,ball.y) < 35
-                @score += 10
+    def catch(moneypiles)
+        moneypiles.reject! do |pile| 
+            if Gosu.distance(@x,@y, pile.x,pile.y) < 50
+                @score += 100
                 true 
             else
                 false
@@ -119,14 +119,14 @@ end
 
 
 
-class PokeBall
+class MoneyPile
     attr_reader :x, :y
     def initialize(animation)
         @animation = animation
         @color = Gosu::Color::BLACK.dup
-        @color.red = rand(256-40)+40
+        
         @color.green = rand(256-40)+40
-        @color.blue = rand(256-40)+40
+        
         @x = rand * 1600
         @y = rand * 1130
 
@@ -134,7 +134,7 @@ class PokeBall
 
     def draw
         img = @animation[Gosu.milliseconds / 100 % @animation.size]
-        img.draw(@x - img.width / 2.0, @y - img.height / 2.0, ZOrder::POKEBALLS,1,1,@color,:add)
+        img.draw(@x - img.width / 2.0, @y - img.height / 2.0, ZOrder::MONEYPILES,1,1,@color,:add)
     end
 
 end
